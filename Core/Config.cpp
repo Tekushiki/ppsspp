@@ -758,6 +758,7 @@ static const ConfigSetting graphicsSettings[] = {
 	ConfigSetting("UseGeometryShader", SETTING(g_Config, bUseGeometryShader), false, CfgFlag::PER_GAME),
 	ConfigSetting("SkipBufferEffects", SETTING(g_Config, bSkipBufferEffects), false, CfgFlag::PER_GAME | CfgFlag::REPORT),
 	ConfigSetting("DisableRangeCulling", SETTING(g_Config, bDisableRangeCulling), false, CfgFlag::PER_GAME | CfgFlag::REPORT),
+	ConfigSetting("ReduceLightShaderPatch", SETTING(g_Config, bReduceLightShaderPatch), false, CfgFlag::PER_GAME),
 	ConfigSetting("DepthRasterMode", SETTING(g_Config, iDepthRasterMode), &DefaultDepthRaster, CfgFlag::PER_GAME | CfgFlag::REPORT),
 	ConfigSetting("SoftwareRenderer", SETTING(g_Config, bSoftwareRendering), false, CfgFlag::PER_GAME),
 	ConfigSetting("SoftwareRendererJit", SETTING(g_Config, bSoftwareRenderingJit), true, CfgFlag::PER_GAME),
