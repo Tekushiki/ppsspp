@@ -20,6 +20,7 @@
 #include "Common/GPU/ShaderWriter.h"
 #include "Common/GPU/thin3d.h"
 #include "Core/Config.h"
+#include "Core/ELF/ParamSFO.h"
 #include "Core/System.h"
 #include "GPU/ge_constants.h"
 #include "GPU/GPUState.h"
@@ -31,6 +32,11 @@
 #undef WRITE
 
 #define WRITE(p, ...) p.F(__VA_ARGS__)
+
+
+static bool IsGodEater2DiscID(const std::string &discID) {
+	return discID == "NPJH50832" || discID == "NPJH-50832";
+}
 
 static const char * const boneWeightAttrDecl[9] = {
 	"#ERROR#",
@@ -212,6 +218,7 @@ bool GenerateVertexShader(const VShaderID &id, char *buffer, const ShaderLanguag
 	bool hasTexcoordTess = id.Bit(VS_BIT_HAS_TEXCOORD_TESS);
 	bool hasNormalTess = id.Bit(VS_BIT_HAS_NORMAL_TESS);
 	bool flipNormalTess = id.Bit(VS_BIT_NORM_REVERSE_TESS);
+	const bool reduceLightPatch = g_Config.bReduceLightShaderPatch && IsGodEater2DiscID(g_paramSFO.GetDiscID());
 
 	const char *shading = "";
 	if (compat.glslES30 || compat.shaderLanguage == GLSL_VULKAN)
@@ -1104,6 +1111,13 @@ bool GenerateVertexShader(const VShaderID &id, char *buffer, const ShaderLanguag
 			}
 			if (lmode) {
 				WRITE(p, "  %sv_color1 = splat3(0.0);\n", compat.vsOutPrefix);
+			}
+		}
+
+		if (reduceLightPatch) {
+			WRITE(p, "  %sv_color0.rgb *= 0.85;\n", compat.vsOutPrefix);
+			if (lmode) {
+				WRITE(p, "  %sv_color1 *= 0.85;\n", compat.vsOutPrefix);
 			}
 		}
 

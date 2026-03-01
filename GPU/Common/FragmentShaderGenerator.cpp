@@ -36,6 +36,10 @@
 
 #define WRITE(p, ...) p.F(__VA_ARGS__)
 
+static bool IsGodEater2DiscID(const std::string &discID) {
+	return discID == "NPJH50832" || discID == "NPJH-50832";
+}
+
 static const SamplerDef samplersMono[3] = {
 	{ 0, "tex" },
 	{ 1, "fbotex", SamplerFlags::ARRAY_ON_VULKAN },
@@ -67,6 +71,7 @@ bool GenerateFragmentShader(const FShaderID &id, char *buffer, const ShaderLangu
 
 	bool texture3D = id.Bit(FS_BIT_3D_TEXTURE);
 	bool arrayTexture = id.Bit(FS_BIT_SAMPLE_ARRAY_TEXTURE);
+	const bool reduceLightPatch = g_Config.bReduceLightShaderPatch && IsGodEater2DiscID(g_paramSFO.GetDiscID());
 
 	ReplaceAlphaType stencilToAlpha = static_cast<ReplaceAlphaType>(id.Bits(FS_BIT_STENCIL_TO_ALPHA, 2));
 
@@ -1083,6 +1088,10 @@ bool GenerateFragmentShader(const FShaderID &id, char *buffer, const ShaderLangu
 			// Do nothing. We'll mask out the alpha using color mask.
 			break;
 		}
+	}
+
+	if (reduceLightPatch) {
+		WRITE(p, "  v.rgb *= 0.85;\n");
 	}
 
 	switch (stencilToAlpha) {
