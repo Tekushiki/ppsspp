@@ -666,6 +666,11 @@ void GameSettingsScreen::CreateGraphicsSettings(UI::ViewGroup *graphicsSettings)
 		graphicsSettings->Add(new BitCheckBox(&g_Config.iShowStatusFlags, (int)ShowStatusFlags::BATTERY_PERCENT, gr->T("Show Battery %")));
 	}
 	AddOverlayList(graphicsSettings, screenManager());
+
+#if PPSSPP_PLATFORM(ANDROID)
+	graphicsSettings->Add(new ItemHeader(gr->T("Patch")));
+	graphicsSettings->Add(new CheckBox(&g_Config.bReduceLightShaderPatch, gr->T("Reduce light shader patch (God Eater 2)")));
+#endif
 }
 
 void GameSettingsScreen::CreateAudioSettings(UI::ViewGroup *audioSettings) {
