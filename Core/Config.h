@@ -1,4 +1,4 @@
-// Copyright (c) 2012- PPSSPP Project.
+'''// Copyright (c) 2012- PPSSPP Project.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 #include "Common/File/Path.h"
 #include "Common/Math/geom2d.h"
 #include "Core/ConfigValues.h"
+#include "Core/ELF/ParamSFO.h"
 
 extern const char *PPSSPP_GIT_VERSION;
 
@@ -779,6 +780,7 @@ std::string CreateRandMAC();
 // TODO: Find a better place for this.
 extern http::RequestManager g_DownloadManager;
 extern Config g_Config;
+extern ParamSFOData g_paramSFO;
 
 enum class AdhocDataMode {
 	P2P = 0,
@@ -800,3 +802,4 @@ extern std::mutex downloadedProAdhocServerListMutex;
 extern std::vector<AdhocServerListEntry> downloadedProAdhocServerList;
 
 AdhocDataMode getAdhocServerDataMode(const std::string &server);
+''
